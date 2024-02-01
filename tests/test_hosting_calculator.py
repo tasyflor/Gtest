@@ -9,8 +9,8 @@ class TestBase:
         home_page = MainPage(self.driver)
         min_prise_detected = home_page.get_price_low().get_attribute('placeholder')
         max_prise_detected = home_page.get_price_high().get_attribute('placeholder')
-        min_prise=int(min_prise_detected)+10
-        max_prise=int(max_prise_detected)-10
+        min_prise = int(min_prise_detected) + 10
+        max_prise = int(max_prise_detected) - 10
         home_page.get_price_high().clear()
         home_page.get_price_high().send_keys(max_prise)
         home_page.get_price_low().clear()
@@ -37,15 +37,13 @@ class TestBase:
         for currency in currencies:
             value = currency.text
             euro = '€'
-            dollar='$'
-            if result =='€':
-                if value==euro:
+            dollar = '$'
+            if result == '€':
+                if value == euro:
                     return True
-            elif result =='$':
-                if value==dollar:
+            elif result == '$':
+                if value == dollar:
                     return True
-
-
 
     def test_virtual_euro(self):
         filter_results = self.check_prises()
@@ -53,7 +51,6 @@ class TestBase:
 
         assert filter_results
         assert currency_result
-
 
     def test_virtual_dollar(self):
         home_page = MainPage(self.driver)

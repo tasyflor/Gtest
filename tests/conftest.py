@@ -7,17 +7,20 @@ from selenium.webdriver.chrome.options import Options as chrome_options
 @pytest.fixture
 def get_chrome_options():
     options = chrome_options()
-    options.add_argument('chrome')  # Use 'headless' if don`t need browser UI ("chrome if need UI")
-    options.add_argument('--start-maximized')
-    options.add_argument('window-size=1200x600')
-    options.add_experimental_option("detach", True)
+    options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument('--ignore-ssl-errors=yes')
+    options.add_argument('--ignore-certificate-errors')
     return options
 
 
 @pytest.fixture
 def get_webdriver(get_chrome_options):
     options = get_chrome_options
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Remote(command_executor='http://chrome:4444/wd/hub', options=options)
     return driver
 
 
@@ -29,6 +32,6 @@ def setup(request, get_webdriver):
         request.cls.driver = driver
     driver.get(url)
     yield driver
-    #driver.close()
-    #driver.quit()
+    driver.close()
+    driver.quit()
 
